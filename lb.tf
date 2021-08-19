@@ -25,7 +25,7 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.example.arn
   port              = 443
   protocol          = "HTTPS"
-  certificate_arn   = "arn:aws:acm:ap-northeast-1:696964553679:certificate/13ef9b3e-1b18-44ea-b033-5e33ac43be40"
+  certificate_arn   = aws_acm_certificate.example.arn
   ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
@@ -69,4 +69,45 @@ module "https_sg" {
   vpc_id      = aws_vpc.example.id
   port        = 443
   cidr_blocks = ["0.0.0.0/0"]
+}
+
+resource "aws_lb_target_group" "example" {
+  name                 = "example"
+  target_type          = "ip"
+  vpc_id               = aws_vpc.example.id
+  port                 = 80
+  protocol             = "HTTP"
+  deregistration_delay = 60
+
+  health_check {
+    path                = "/"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+    matcher             = 200
+    port                = "traffic-port"
+    protocol            = "HTTP"
+  }
+
+  depends_on = [
+    aws_lb.example
+  ]
+}
+
+resource "aws_lb_listener_rule" "example" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.example.arn
+  }
+
+  # FIXME
+  condition {
+    path_pattern {
+      values = ["/example/*"]
+    }
+  }
 }
