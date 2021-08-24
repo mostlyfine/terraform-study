@@ -1,6 +1,6 @@
 [
   {
-    "name": "example",
+    "name": "example-app",
     "image": "nginx:latest",
     "essential": true,
     "portMappings": [

@@ -1,9 +1,9 @@
 resource "aws_ecs_cluster" "example" {
-  name = "example"
+  name = "example-cluster"
 }
 
 resource "aws_ecs_task_definition" "example" {
-  family                   = "example"
+  family                   = "example-task-def"
   cpu                      = 256
   memory                   = 512
   network_mode             = "awsvpc"
@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "example" {
 }
 
 resource "aws_ecs_service" "example" {
-  name                              = "example"
+  name                              = "example-service"
   cluster                           = aws_ecs_cluster.example.arn
   task_definition                   = aws_ecs_task_definition.example.arn
   desired_count                     = 2
@@ -31,7 +31,7 @@ resource "aws_ecs_service" "example" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.example.arn
-    container_name   = "example"
+    container_name   = "example-app"
     container_port   = 80
   }
 
