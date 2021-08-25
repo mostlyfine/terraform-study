@@ -1,0 +1,13 @@
+[
+  {
+    "name": "example-app",
+    "image": "example-repository",
+    "essential": true,
+    "portMappings": [
+      {
+        "protocol": "tcp",
+        "containerPort": 3000
+      }
+    ]
+  }
+]
