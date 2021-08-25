@@ -1,5 +1,6 @@
 *.hcl
 *.swp
+.envrc
 
 # Local .terraform directories
 **/.terraform/*
