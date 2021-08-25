@@ -68,7 +68,7 @@ resource "aws_lb_target_group" "example" {
   name                 = "example"
   target_type          = "ip"
   vpc_id               = aws_vpc.example.id
-  port                 = 80
+  port                 = 3000
   protocol             = "HTTP"
   deregistration_delay = 60
 
