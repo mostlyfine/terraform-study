@@ -87,23 +87,3 @@ resource "aws_lb_target_group" "example" {
     aws_lb.example
   ]
 }
-
-resource "aws_lb_listener_rule" "example" {
-  listener_arn = aws_lb_listener.https.arn
-  priority     = 100
-
-  action {
-    type = "fixed-response"
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "this is https response."
-      status_code  = 200
-    }
-  }
-
-  condition {
-    path_pattern {
-      values = ["/example/*"]
-    }
-  }
-}
